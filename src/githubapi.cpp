@@ -10,12 +10,18 @@ GitHubApi::GitHubApi(QObject *parent) : QObject(parent)
 
 /*!
  * \brief GitHubApi::ghGetOrgsReposRul 获取组织的所有仓库
- * \return
+ * \return url 要查询的 url
+ * \see https://developer.github.com/v3/repos/#list-public-repositories
  */
 QUrl GitHubApi::ghGetOrgsReposRul()
 {
     QString qstUrl = m_ghBase.toString();
     qstUrl += "/orgs/linuxdeepin/repos";
     QUrl url(qstUrl);
+
+//    QUrlQuery query;
+//    query.addQueryItem("rel", "next");
+//    url.setQuery(query);
+
     return url;
 }
