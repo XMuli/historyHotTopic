@@ -26,7 +26,8 @@ public slots:
 private:
     QNetworkAccessManager *m_manager;
     QNetworkRequest *m_request;
-    QNetworkReply *m_replyGet;
+    QNetworkReply *m_reply;
+    QNetworkReply *reply2;
 };
 
 #endif // NETWORK_H
