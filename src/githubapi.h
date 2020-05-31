@@ -14,7 +14,8 @@ class GitHubApi : public QObject
 public:
     explicit GitHubApi(QObject *parent = nullptr);
 
-    QUrl ghGetOrgsReposRul();
+    QUrl ghGetOrgsReposRul(QUrlQuery query);
+    QUrl ghGetReposBranches(QString ower, QString repo, QUrlQuery query);
 
 private:
     QUrl m_ghBase;
