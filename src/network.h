@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "githubapi.h"
+#include "winrepinfo.h"
 
 #include "json.hpp"
 using json = nlohmann::json;
@@ -28,6 +29,8 @@ private:
     QNetworkRequest *m_request;
     QNetworkReply *m_reply;
     QNetworkReply *reply2;
+
+    WinRepInfo *m_winTabInfo;
 };
 
 #endif // NETWORK_H

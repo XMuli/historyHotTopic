@@ -35,7 +35,7 @@ QUrl GitHubApi::ghGetOrgsReposRul(QUrlQuery query)
 QUrl GitHubApi::ghGetReposBranches(QString ower, QString repo, QUrlQuery query)
 {
     QString qstBase = m_ghBase.toString();
-    QString qstrUrl =  qstBase + "/repos" + "/" +　ower　+ "/" + repo + "/branches";
+    QString qstrUrl =  qstBase + "/repos" + "/" + ower + "/" + repo + "/branches";
     QUrl url(qstrUrl);
     url.setQuery(query);
 

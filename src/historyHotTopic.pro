@@ -20,17 +20,20 @@ SOURCES += \
     mainwindow.cpp \
     zhihuapi.cpp \
     githubapi.cpp \
-    network.cpp
+    network.cpp \
+    winrepinfo.cpp
 
 HEADERS += \
     mainwindow.h \
     zhihuapi.h \
     githubapi.h \
     network.h \
-    json.hpp
+    json.hpp \
+    winrepinfo.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    winrepinfo.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
