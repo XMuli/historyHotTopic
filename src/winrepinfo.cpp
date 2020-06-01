@@ -73,7 +73,7 @@ void WinRepInfo::setTab(QStringList list, int row)
     //    };
 
 
-    qDebug()<<"--->"<<list<<"   -->"<<row;
+//    qDebug()<<"--->"<<list<<"   -->"<<row;
     for (int col = 0; col < list.count(); col++) {
         QTableWidgetItem * item = new QTableWidgetItem(list.at(col));
         ui->tabRepInfo->setItem(row - 1, col, item);
