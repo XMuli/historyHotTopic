@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WinRepInfo</class>
+ <widget class="QWidget" name="WinRepInfo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1054</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTableWidget" name="tabRepInfo">
+     <column>
+      <property name="text">
+       <string>c1</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c2</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c3</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c4</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c6</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c7</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c8</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>c9</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
