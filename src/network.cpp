@@ -1,13 +1,15 @@
 #include "network.h"
 
+#include <QMessageBox>
+
+#define ON 0
 NetWork::NetWork(QObject *parent) : QObject(parent)
 {
-
-    ApiGitHub gh;
+    m_apiGh = new ApiGitHub();
     m_manager = new QNetworkAccessManager(this);
     m_winTabInfo = new WinRepInfo();
 
-# if 0
+# if ON
 
     //查询指定组织下的所有仓库的几个重要的基本信息
     QUrl url;
@@ -15,25 +17,85 @@ NetWork::NetWork(QObject *parent) : QObject(parent)
     for (int i = 1; i <= 8; i++) {
         query.clear();
         query.addQueryItem("page", QString::number(i, 10));
-        url = gh.ghGetOrgsReposRul(query);
+        url = m_apiGh->ghGetOrgsAllRepos(query);
         m_request = new QNetworkRequest(url);
 
         qDebug()<<"@@@@@@@@"<<url;
         m_reply = m_manager->get(*m_request);
     }
 
+
+
     connect(m_manager, &QNetworkAccessManager::finished, this, &NetWork::onGhGetAllRepo);
+
+
+
 #else
     onGhGetAllRepo(m_reply);
-    m_winTabInfo->show();
 #endif
 
 
+
+    ghRepHasSpeBra();
+    m_winTabInfo->show();
 }
 
-// 判断 gh 下的仓库是否有指定名称的分支(eg:uos)
-void NetWork::ghRepBraUos()
+NetWork::~NetWork()
 {
+    delete m_apiGh;
+}
+
+// 仓库是否有特殊分支(eg: uos 分支)
+void NetWork::ghRepHasSpeBra()
+{
+//    QString ower = "linuxdeepin";
+//    QString repo = "dde-dock";
+//    QUrlQuery query;
+//    query.addQueryItem("per_page", "100");
+
+//    QUrl url = m_apiGh->ghGetReposBranches(ower, repo, query);
+////    for (int i = 1; i <= 8; i++) {
+////        query.clear();
+////        query.addQueryItem("page", QString::number(i, 10));
+////        url = m_apiGh->ghGetOrgsAllRepos(query);
+//        m_request = new QNetworkRequest(url);
+
+//        qDebug()<<"@@@@@@@@2"<<url;
+//        m_reply = m_manager->get(*m_request);
+////    }
+
+
+    //https://api.github.com/repos/linuxdeepin/testghapi/branches
+
+    json js = "[{\"name\":\"dev2\",\"commit\":{\"sha\":\"354567bb5cd9a4d959308231de0f67ddccf5e016\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/354567bb5cd9a4d959308231de0f67ddccf5e016\"},\"protected\":false},{\"name\":\"dev3\",\"commit\":{\"sha\":\"ddcc6977a125985be4f7eed5077aed81a788de06\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/ddcc6977a125985be4f7eed5077aed81a788de06\"},\"protected\":false},{\"name\":\"master\",\"commit\":{\"sha\":\"354567bb5cd9a4d959308231de0f67ddccf5e016\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/354567bb5cd9a4d959308231de0f67ddccf5e016\"},\"protected\":false},{\"name\":\"uos\",\"commit\":{\"sha\":\"cca55e2617db142bb2c4b02c3173e5ac5a80fac2\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/cca55e2617db142bb2c4b02c3173e5ac5a80fac2\"},\"protected\":false}]"_json;
+    json jsTemp;
+    for (json::iterator it = js.begin(); it != js.end(); it++) {
+        jsTemp = *it;
+        std::string strBranch =  jsTemp["name"];
+        QString qstBranch = QString::fromStdString(strBranch);
+
+        if (jsTemp["name"] == "uos") {
+            std::cout<<"branch "<<jsTemp["name"]<<"  protected:"<<jsTemp["protected"];
+            std::cout.flush();
+            m_map.insert(jsTemp["name"], true);
+            break;
+        }
+
+        if ((it == js.end()) && (jsTemp["name"] == "uos")) {
+            std::cout<<jsTemp["name"]<<"  没有指定的(uos)分支\n";
+            std::cout.flush();
+        }
+    }
+
+    m_map.insert(jsTemp["name"], false);
+
+
+    qDebug()<<"_____________>";
+    for (auto it = m_map.begin(); it != m_map.end(); it++) {
+        std::cout<<"[key:]"<<it.key()<<"        [value:]"<<it.value()<<"\n";
+        std::cout.flush();
+    }
+
 
 }
 
@@ -46,11 +108,11 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
     qDebug()<<"---------02-------"<<&reply;
 //    list<<"序号(num)"<<"仓库名(name)"<<"默认分支(default_branch)"<<"链接(html_url)"<<"存档(archived)"<<"uos分支(bool)";
 
-# if 0
+# if ON
 
     QByteArray qbyData = reply->readAll();
-//    std::string strData = qbyData.toStdString();
-//    json js = json::parse(strData2);
+    std::string strData = qbyData.toStdString();
+    json js = json::parse(strData);
     static int i = 0;
 
     for (json::iterator it = js.begin(); it != js.end(); it++) {
@@ -59,10 +121,33 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
         if (!jsTemp.is_object()) {  //"IP 访问服务器超过了限制 !!! 坑"
             std::cout << *it ;
             std::cout.flush();
+
+            QMessageBox::information(m_winTabInfo, "白嫖用户", "你的访问 github api 的次数限制到了;", QMessageBox::Ok);
+//            disconnect(m_manager, &QNetworkAccessManager::finished, this, &NetWork::onGhGetAllRepo);
+
             return;
         } else {
             std::cout <<"i:"<<i++ <<"   "<<jsTemp["name"]<<"  default_branch:"<<jsTemp["default_branch"]<<"   Archived:"<<jsTemp["archived"]<<"  \n";
             std::cout.flush();
+
+            QString qstrI = QString::number(i);
+            std::string strName = jsTemp["name"];
+            QString qstName = QString::fromStdString(strName);
+            std::string strDefBarch = jsTemp["default_branch"];
+            QString qstDefBarch = QString::fromStdString(strDefBarch);
+            std::string strHtmUrl = jsTemp["html_url"];
+            QString qstHtmUrl = QString::fromStdString(strHtmUrl);
+            bool bArchived = jsTemp["archived"];
+            QString qstArchived  = QString::number(bArchived);
+            std::string strUos = "";//jsTemp["default_branch"];
+            QString qstUos = QString::fromStdString(strUos);
+
+            QStringList list;
+            list << qstrI << qstName << qstDefBarch << qstHtmUrl << qstArchived << qstUos;
+
+            qDebug()<<"###"<<list;
+            m_winTabInfo->setTab(list, i);
+
         }
     }
 
@@ -74,14 +159,12 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
     static int i = 0;
     json jsTemp;
 
-#endif
-
     for (json::iterator it = js.begin(); it != js.end(); ++it) {
       jsTemp = *it;
-      std::cout <<"i:"<<i++ <<"   "<<jsTemp["name"]<<"  default_branch:"<<jsTemp["default_branch"]<<"   Archived:"<<jsTemp["archived"]<<"  \n";
-      std::cout.flush();
+//      std::cout <<"i:"<<i++ <<"   "<<jsTemp["name"]<<"  default_branch:"<<jsTemp["default_branch"]<<"   Archived:"<<jsTemp["archived"]<<"  \n";
+//      std::cout.flush();
 
-      QString qstrI = QString::number(i);
+      QString qstrI = QString::number(i++);
       std::string strName = jsTemp["name"];
       QString qstName = QString::fromStdString(strName);
       std::string strDefBarch = jsTemp["default_branch"];
@@ -96,9 +179,11 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
       QStringList list;
       list << qstrI << qstName << qstDefBarch << qstHtmUrl << qstArchived << qstUos;
 
-      qDebug()<<"###"<<list;
+//      qDebug()<<"###"<<list;
       m_winTabInfo->setTab(list, i);
     }
+#endif
+
 
 /*
 //    //获取总的页数

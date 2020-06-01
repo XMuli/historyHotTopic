@@ -1,7 +1,7 @@
 #include "apigithub.h"
 #include <QDebug>
 
-ApiGitHub::ApiGitHub(QObject *parent) : QObject(parent)
+ApiGitHub::ApiGitHub()
 {
     m_ghBase.setUrl("https://api.github.com");
     m_ghCat.clear();
@@ -9,12 +9,12 @@ ApiGitHub::ApiGitHub(QObject *parent) : QObject(parent)
 }
 
 /*!
- * \brief ApiGitHub::ghGetOrgsReposRul 获取组织的所有仓库
+ * \brief ApiGitHub::ghGetOrgsAllRepos 获取组织的所有仓库
  * \param query 设置获取翻页结果
  * \return 总的查询链接
  * \see https://developer.github.com/v3/repos/#list-public-repositories
  */
-QUrl ApiGitHub::ghGetOrgsReposRul(QUrlQuery query)
+QUrl ApiGitHub::ghGetOrgsAllRepos(QUrlQuery query)
 {
     QString qstUrl = m_ghBase.toString();
     qstUrl += "/orgs/linuxdeepin/repos";
@@ -25,7 +25,7 @@ QUrl ApiGitHub::ghGetOrgsReposRul(QUrlQuery query)
 }
 
 /*!
- * \brief ApiGitHub::ghGetReposBranches 获取某仓库的所有分支
+ * \brief ApiGitHub::ghGetReposBranches 获取某仓库的所有分支链接 url
  * \param ower 仓库拥有者
  * \param repo 仓库名
  * \param query 查询的额外参数
@@ -35,8 +35,8 @@ QUrl ApiGitHub::ghGetOrgsReposRul(QUrlQuery query)
 QUrl ApiGitHub::ghGetReposBranches(QString ower, QString repo, QUrlQuery query)
 {
     QString qstUrl = m_ghBase.toString();
-    qstUrl += "/orgs/linuxdeepin/repos";
-    QUrl url(qstUrl);
+    QString qstrTemp =   qstUrl + "/repos" + "/" + ower + "/" +  repo + "/branches";
+    QUrl url(qstrTemp);
     url.setQuery(query);
 
     return url;

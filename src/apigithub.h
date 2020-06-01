@@ -8,13 +8,12 @@
 /*!
  * \brief The ApiGitHub class github 上使用的 api 接口类调用；函数名称默认为 gh 开头
  */
-class ApiGitHub : public QObject
+class ApiGitHub
 {
-    Q_OBJECT
 public:
-    explicit ApiGitHub(QObject *parent = nullptr);
+    explicit ApiGitHub();
 
-    QUrl ghGetOrgsReposRul(QUrlQuery query);
+    QUrl ghGetOrgsAllRepos(QUrlQuery query);
     QUrl ghGetReposBranches(QString ower, QString repo, QUrlQuery query);
 
 private:

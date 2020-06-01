@@ -6,6 +6,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDebug>
+#include <QMap>
 #include <iostream>
 
 #include "apigithub.h"
@@ -19,7 +20,10 @@ class NetWork : public QObject
     Q_OBJECT
 public:
     explicit NetWork(QObject *parent = nullptr);
-    void ghRepBraUos();
+    ~NetWork();
+
+
+    void ghRepHasSpeBra();
 
 public slots:
     void onGhGetAllRepo(QNetworkReply *reply);
@@ -28,10 +32,11 @@ private:
     QNetworkAccessManager *m_manager;
     QNetworkRequest *m_request;
     QNetworkReply *m_reply;
-    QNetworkReply *reply2;
+
+    QMap<std::string, bool> m_map;
 
     WinRepInfo *m_winTabInfo;
-//    GitHubApi *m_apiGh;
+    ApiGitHub *m_apiGh;
 };
 
 #endif // NETWORK_H
