@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QMessageBox>
 #include "network.h"
 
 //#include <iostream>
