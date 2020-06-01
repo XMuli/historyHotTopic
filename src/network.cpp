@@ -3,12 +3,13 @@
 NetWork::NetWork(QObject *parent) : QObject(parent)
 {
 
-    GitHubApi gh;
+    ApiGitHub gh;
     m_manager = new QNetworkAccessManager(this);
     m_winTabInfo = new WinRepInfo();
 
 # if 0
 
+    //查询指定组织下的所有仓库的几个重要的基本信息
     QUrl url;
     QUrlQuery query;
     for (int i = 1; i <= 8; i++) {
@@ -20,12 +21,19 @@ NetWork::NetWork(QObject *parent) : QObject(parent)
         qDebug()<<"@@@@@@@@"<<url;
         m_reply = m_manager->get(*m_request);
     }
+
     connect(m_manager, &QNetworkAccessManager::finished, this, &NetWork::onGhGetAllRepo);
 #else
     onGhGetAllRepo(m_reply);
     m_winTabInfo->show();
 #endif
 
+
+}
+
+// 判断 gh 下的仓库是否有指定名称的分支(eg:uos)
+void NetWork::ghRepBraUos()
+{
 
 }
 
@@ -92,12 +100,8 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
       m_winTabInfo->setTab(list, i);
     }
 
-
-
-
-
-
-    //获取总的页数
+/*
+//    //获取总的页数
 //    QByteArray qbytArry;
 
 //    if (m_reply->hasRawHeader("link")) {
@@ -113,5 +117,6 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
 //    } else {
 //        qDebug()<<"hasRawHeader(\"link\") == false";
 //    }
+*/
 
 }

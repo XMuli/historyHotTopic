@@ -18,18 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    zhihuapi.cpp \
-    githubapi.cpp \
     network.cpp \
-    winrepinfo.cpp
+    winrepinfo.cpp \
+    apigithub.cpp \
+    apizhihu.cpp
 
 HEADERS += \
     mainwindow.h \
-    zhihuapi.h \
-    githubapi.h \
     network.h \
     json.hpp \
-    winrepinfo.h
+    winrepinfo.h \
+    apigithub.h \
+    apizhihu.h
 
 FORMS += \
     mainwindow.ui \
