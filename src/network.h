@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <iostream>
 
-#include "githubapi.h"
+#include "apigithub.h"
 #include "winrepinfo.h"
 
 #include "json.hpp"
@@ -19,7 +19,7 @@ class NetWork : public QObject
     Q_OBJECT
 public:
     explicit NetWork(QObject *parent = nullptr);
-
+    void ghRepBraUos();
 
 public slots:
     void onGhGetAllRepo(QNetworkReply *reply);
@@ -31,6 +31,7 @@ private:
     QNetworkReply *reply2;
 
     WinRepInfo *m_winTabInfo;
+//    GitHubApi *m_apiGh;
 };
 
 #endif // NETWORK_H
