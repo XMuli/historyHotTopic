@@ -37,6 +37,11 @@ private:
 
     WinRepInfo *m_winTabInfo;
     ApiGitHub *m_apiGh;
+
+    QStringList m_list;  //存储仓库的名称
+
+    QObject m_sendRepo;
+    QObject m_sendBranch;
 };
 
 #endif // NETWORK_H
