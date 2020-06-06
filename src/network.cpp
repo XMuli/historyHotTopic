@@ -31,13 +31,8 @@ NetWork::NetWork(QObject *parent) : QObject(parent)
     onGhGetAllRepo(m_reply);
 #endif
 
-
-
     ghRepHasSpeBra();
     m_winTabInfo->show();
-
-
-
 }
 
 NetWork::~NetWork()
@@ -54,53 +49,9 @@ void NetWork::ghRepHasSpeBra()
     query.addQueryItem("per_page", "100");
 
     QUrl url = m_apiGh->ghGetReposBranches(ower, repo, query);
-//    for (int i = 1; i <= 8; i++) {
-//        query.clear();
-//        query.addQueryItem("page", QString::number(i, 10));
         m_request = new QNetworkRequest(url);
         m_request->setOriginatingObject(&m_sendBranch);
-//        m_reply = m_manager->get(*m_request);
 
-
-        qDebug()<<"@@@@@@@@2"<<url;
-
-//        m_reply = m_manager->get(*m_request);
-//    }
-
-
-    //https://api.github.com/repos/linuxdeepin/testghapi/branches
-
-//    json js = "[{\"name\":\"dev2\",\"commit\":{\"sha\":\"354567bb5cd9a4d959308231de0f67ddccf5e016\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/354567bb5cd9a4d959308231de0f67ddccf5e016\"},\"protected\":false},{\"name\":\"dev3\",\"commit\":{\"sha\":\"ddcc6977a125985be4f7eed5077aed81a788de06\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/ddcc6977a125985be4f7eed5077aed81a788de06\"},\"protected\":false},{\"name\":\"master\",\"commit\":{\"sha\":\"354567bb5cd9a4d959308231de0f67ddccf5e016\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/354567bb5cd9a4d959308231de0f67ddccf5e016\"},\"protected\":false},{\"name\":\"uos\",\"commit\":{\"sha\":\"cca55e2617db142bb2c4b02c3173e5ac5a80fac2\",\"url\":\"https://api.github.com/repos/linuxdeepin/testghapi/commits/cca55e2617db142bb2c4b02c3173e5ac5a80fac2\"},\"protected\":false}]"_json;
-
-
-
-//    json jsTemp;
-//    for (json::iterator it = js.begin(); it != js.end(); it++) {
-//        jsTemp = *it;
-//        std::string strBranch =  jsTemp["name"];
-//        QString qstBranch = QString::fromStdString(strBranch);
-
-//        if (jsTemp["name"] == "uos") {
-//            std::cout<<"branch "<<jsTemp["name"]<<"  protected:"<<jsTemp["protected"];
-//            std::cout.flush();
-//            m_map.insert(jsTemp["name"], true);
-//            break;
-//        }
-
-//        if ((it == js.end()) && (jsTemp["name"] == "uos")) {
-//            m_map.insert(jsTemp["name"], false);
-//            std::cout<<jsTemp["name"]<<"  没有指定的(uos)分支\n";
-//            std::cout.flush();
-//        }
-//    }
-
-
-
-//    qDebug()<<"_____________>";
-//    for (auto it = m_map.begin(); it != m_map.end(); it++) {
-//        std::cout<<"[key:]"<<it.key()<<"        [value:]"<<it.value()<<"\n";
-//        std::cout.flush();
-//    }
 }
 
 /*!
@@ -116,7 +67,6 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
         qDebug()<<"---------02-------"<<&reply<<" m_sendRepo22222222";
 
         # if ON
-
             QByteArray qbyData = reply->readAll();
             std::string strData = qbyData.toStdString();
             json js = json::parse(strData);
@@ -207,28 +157,5 @@ void NetWork::onGhGetAllRepo(QNetworkReply *reply)
 
     } else {
     }
-
-
-
-
-
-/*
-//    //获取总的页数
-//    QByteArray qbytArry;
-
-//    if (m_reply->hasRawHeader("link")) {
-//        qbytArry = m_reply->rawHeader("link");
-//        bool ok1 = false;
-//        bool ok2 = false;
-//        QString qstrLink = QString::fromStdString(qbytArry.toStdString());
-//        QString qstr1 = qstrLink.section('>', 0, 0);
-//        QString qstr2 = qstrLink.section('>', 1, 1);
-//        int nNextPage = qstr1.section('=', 1, 1).toUInt(&ok1, 10);  //下一页的页数
-//        int nAllPage = qstr2.section('=', 2, 2).toUInt(&ok2, 10);  //总的页数
-//        qDebug()<<"--01--"<<qstrLink<<qstr1<<qstr2<<"\n"<<"@"<<nNextPage<<"@"<<nAllPage;
-//    } else {
-//        qDebug()<<"hasRawHeader(\"link\") == false";
-//    }
-*/
 
 }
