@@ -22,7 +22,6 @@ public:
     explicit NetWork(QObject *parent = nullptr);
     ~NetWork();
 
-
     void ghRepHasSpeBra();
 
 public slots:
